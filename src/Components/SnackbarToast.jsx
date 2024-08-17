@@ -5,15 +5,6 @@ import Alert from '@mui/material/Alert';
 const SnackbarToast = ({ triggerOpen, message, severity, customStyles }) => {
     const [open, setOpen] = useState(false);
 
-    const handleOpen = () => {
-        setOpen(true);
-
-        // Automatically close the Snackbar after 5 seconds
-        setTimeout(() => {
-            setOpen(false);
-        }, 5000);
-    };
-
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
             return;
@@ -24,12 +15,12 @@ const SnackbarToast = ({ triggerOpen, message, severity, customStyles }) => {
     // Effect to open the Snackbar when triggerOpen changes
     useEffect(() => {
         if (triggerOpen) {
-            handleOpen();
+            setOpen(true);
         }
     }, [triggerOpen]);
 
     return (
-        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} sx={{ zIndex: 9999 }}>
+        <Snackbar open={open} autoHideDuration={5000} onClose={handleClose} sx={{ zIndex: 9999 }}>
             <Alert
                 onClose={handleClose}
                 severity={severity}

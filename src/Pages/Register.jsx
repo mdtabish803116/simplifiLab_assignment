@@ -200,15 +200,19 @@ function Register() {
   }
 
   function handleGenerateOTP(){
+    setTimeout(() => {
            setOtpExpirationTime(null);
+           setOTPExpired(false)
            setOtpSent(false);
            setOtpSendingError(false);
            setCooldown(false);
            setOTPCheckSent(false);
-
+           setCountdown(60);
+           setGetOTPClicked(true)
+    } , 1)
+           
     const isValid = validateTextFeilds();
-    setGetOTPClicked(true)
-
+   
     if(!isValid){
       if(selectedTitle.trim() === ""){
         titleRef.current.focus()
@@ -264,8 +268,7 @@ const sendOtpEmail = (otp) => {
       from_name: "simplifiiLabs",
       recipient_name: name,     
       sender_name: "simplifiiLabs",  
-      message_content1: `OTP - ${otp}`,
-      message_content12: "Valid for 5 minutes"
+      message_content1: `OTP - ${otp}`
   };
 
   setOTPLoading(true)
@@ -295,19 +298,20 @@ const handleVerifyOtp = () => {
     setOTPVerified(false)
     setOTPVerifyError(false)
     setOTPCheckSent(false)
+    setOtpSendingError(false)
 
   if (attempts >= 5) {
-     setMaxAttempts(true)
+     setTimeout(()=> {setMaxAttempts(true)} , 1)
   }else {
-    if (Date.now() > otpExpirationTime) {
-       setOTPExpired(true)
+    if (Date.now() > otpExpirationTime) 
+      {setTimeout(()=> {setOTPExpired(true)} , 1)
       return;
   }
 
   if (otpText === generatedOtp) {
-      setOTPVerified(true)
+    setTimeout(()=> {setOTPVerified(true)} , 1)
   } else {
-      setOTPVerifyError(true)
+    setTimeout(()=> {setOTPVerifyError(true)} , 1)
   }
   }
 
@@ -401,10 +405,9 @@ useEffect(() => {
       }
     }
   }
-}, [selectedTitle , name , countryCode, 
-  mobileNumber , email, otpText, otpSent , 
-  maxAttempts ,otpExpired , otpVerified , otpVerifyError, 
-  otpSendingError , otpCheckSent])
+    
+}, [getOTPClicked,selectedTitle , name , countryCode, 
+  mobileNumber , email, otpText, otpSent])
   
 // EmailOTP Section
 
@@ -585,7 +588,6 @@ useEffect(() => {
                 }}
                />
             </div>
-
 
             <div style = {{display:"flex" ,gap: "20px", marginBottom:"20px"}}>
                 <TextField
@@ -865,7 +867,7 @@ useEffect(() => {
            </div>
 
            <SnackbarToast
-                triggerOpen={otpCheckSent}
+                triggerOpen = {otpCheckSent}
                 message= "OTP Generated and sent Succesfully"
                 severity="success"
                 customStyles={{
@@ -874,9 +876,10 @@ useEffect(() => {
                     iconColor: '#fff'
                 }}
             />
+            
              <SnackbarToast
-                triggerOpen={otpVerified}
-                message= "OTP Verfication Succesfull"
+                triggerOpen = {otpVerified}
+                message= "OTP Verfied succesfully"
                 severity="success"
                 customStyles={{
                     textColor: '#fff',
@@ -885,9 +888,9 @@ useEffect(() => {
                 }}
             />
 
-             <SnackbarToast
-                triggerOpen={otpVerifyError}
-                message="OTP Verification error"
+            <SnackbarToast
+                triggerOpen = {otpVerifyError}
+                message= "Error while verifying otp"
                 severity="error"
                 customStyles={{
                     textColor: '#fff',
@@ -895,9 +898,21 @@ useEffect(() => {
                     iconColor: '#fff'
                 }}
             />
-              <SnackbarToast
-                triggerOpen={otpSendingError}
-                message="Error while snding OTP"
+
+            <SnackbarToast
+                triggerOpen = {otpSendingError}
+                message= "Error while sending otp"
+                severity="error"
+                customStyles={{
+                    textColor: '#fff',
+                    backgroundcolor: 'red',
+                    iconColor: '#fff'
+                }}
+            />
+
+            <SnackbarToast
+                triggerOpen = {maxAttempts}
+                message= "Cross the limits , Please try again after some time"
                 severity="error"
                 customStyles={{
                     textColor: '#fff',
@@ -907,19 +922,8 @@ useEffect(() => {
             />
 
              <SnackbarToast
-                triggerOpen={maxAttempts}
-                message="Cross the limits , Please try again after some time"
-                severity="error"
-                customStyles={{
-                    textColor: '#fff',
-                    backgroundcolor: 'red',
-                    iconColor: '#fff'
-                }}
-            />
-
-             <SnackbarToast
-                triggerOpen={otpExpired}
-                message="otpExpired , Please resend the otp"
+                triggerOpen = {otpExpired}
+                message= "otpExpired , Please resend the otp"
                 severity="error"
                 customStyles={{
                     textColor: '#fff',
