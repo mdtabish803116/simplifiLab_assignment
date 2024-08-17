@@ -1,70 +1,58 @@
-# Getting Started with Create React App
+### Steps to run the projec t---
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+1. npm install
 
-## Available Scripts
+2. npm start
 
-In the project directory, you can run:
+### Tech Stack ---
 
-### `npm start`
+1. react js
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+2. materialUI (for CSS)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+3. email JS (for sending OTP from frontend)
 
-### `npm test`
+### ScreenShots attatched below related projects
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. Empty input feild validations
 
-### `npm run build`
+<img width="1395" alt="Screenshot 2024-08-17 at 5 38 50 PM" src="https://github.com/user-attachments/assets/c27de103-2103-4759-839c-17278307181c">
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+2. Name Validation
+<img width="1371" alt="Screenshot 2024-08-17 at 5 45 47 PM" src="https://github.com/user-attachments/assets/7d5cc2bb-882e-426b-a4b5-8ad9ebb6010c">
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+3. Mobile NUmber Validation
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+<img width="1371" alt="Screenshot 2024-08-17 at 5 45 47 PM" src="https://github.com/user-attachments/assets/52a44245-441e-469d-b641-d671c9b5742a">
 
-### `npm run eject`
+3. Email Validation
+<img width="1391" alt="Screenshot 2024-08-17 at 5 47 59 PM" src="https://github.com/user-attachments/assets/1a00d488-7b0b-4a3e-ae72-2136d46f64fc">
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+4. OTP Validation
+<img width="1414" alt="Screenshot 2024-08-17 at 5 52 15 PM" src="https://github.com/user-attachments/assets/cbc869eb-58f4-4daf-8c9c-389cb06851c2">
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+5. OTP Generation
+<img width="1361" alt="Screenshot 2024-08-17 at 5 51 05 PM" src="https://github.com/user-attachments/assets/9ae29979-a1fd-494e-8a0c-84188413d019">
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+6. Responsive
+<img width="380" alt="Screenshot 2024-08-17 at 5 55 57 PM" src="https://github.com/user-attachments/assets/c7def90b-caa6-40c9-afb0-a27b29dbe14e">
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+7. Dropdown
 
-## Learn More
+<img width="1403" alt="Screenshot 2024-08-17 at 5 58 49 PM" src="https://github.com/user-attachments/assets/20efd738-7b35-48d5-8259-b0cbc3c2b508">
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-### `npm run build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
