@@ -890,7 +890,7 @@ useEffect(() => {
 
             <SnackbarToast
                 triggerOpen = {otpVerifyError}
-                message= "Error while verifying otp"
+                message= "Error while verifying OTP"
                 severity="error"
                 customStyles={{
                     textColor: '#fff',
@@ -901,7 +901,7 @@ useEffect(() => {
 
             <SnackbarToast
                 triggerOpen = {otpSendingError}
-                message= "Error while sending otp"
+                message= "Error while sending OTP"
                 severity="error"
                 customStyles={{
                     textColor: '#fff',
@@ -912,7 +912,7 @@ useEffect(() => {
 
             <SnackbarToast
                 triggerOpen = {maxAttempts}
-                message= "Cross the limits , Please try again after some time"
+                message= "Cross the limits , Please try after some time"
                 severity="error"
                 customStyles={{
                     textColor: '#fff',
@@ -923,7 +923,7 @@ useEffect(() => {
 
              <SnackbarToast
                 triggerOpen = {otpExpired}
-                message= "otpExpired , Please resend the otp"
+                message= "OTP Expired , Please resend the OTP"
                 severity="error"
                 customStyles={{
                     textColor: '#fff',
