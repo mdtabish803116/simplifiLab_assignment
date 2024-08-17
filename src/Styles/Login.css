@@ -1,0 +1,24 @@
+.loginContainer{
+    flex:0.5
+}
+
+.formContainer{
+   width: 70%;
+   margin-bottom: "30px";
+}
+
+
+@media (max-width: 900px) {
+   .loginContainer {
+     flex: 1;
+   }
+ }
+
+ @media (max-width: 500px) {
+   .formContainer {
+     width: 90%;
+   }
+ }
+
+
+ 
