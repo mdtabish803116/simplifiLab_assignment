@@ -10,6 +10,8 @@
 
 2. materialUI (for CSS)
 
+3. email JS (for sending OTP from frontend)
+
 ### ScreenShots attatched below related projects
 
 1. Empty input feild validations
