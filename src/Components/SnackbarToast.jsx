@@ -23,7 +23,6 @@ const SnackbarToast = ({ triggerOpen, message, severity, customStyles }) => {
         open={open} 
         autoHideDuration={5000} 
         onClose={handleClose}  
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }} 
         sx={{ zIndex: 9999 }}>
             <Alert
                 onClose={handleClose}
