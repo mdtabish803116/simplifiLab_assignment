@@ -6,7 +6,9 @@ import { InputAdornment,IconButton , Button} from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import { Link } from "react-router-dom";
 import emailjs from "emailjs-com";
+import axios from 'axios';
 import SnackbarToast from "../Components/SnackbarToast";
+import CustomBox from "../Components/CustomBox";
 
 
 const titleData = [
@@ -62,16 +64,16 @@ const countryCodeData = [
     label: 'angolla(+244)',
   },
 {
-  value: '+213',
-  label: 'algeria(+213)',
+  value: '+297',
+  label: 'australia(+297)',
 },
 {
-  value: '+244',
-  label: 'angolla(+244)',
+  value: '+1264',
+  label: 'anguilla(+1264)',
 },
 {
-  value: '+213',
-  label: 'algeria(+213)',
+  value: '+374',
+  label: 'armenia(+374)',
 },
 ];
 
@@ -92,13 +94,17 @@ function Register() {
   const [attempts, setAttempts] = useState(0);
   const [cooldown, setCooldown] = useState(false);
   const [OTPLoading , setOTPLoading] = useState(false);
-  const [otpSendingError , setOtpSendingError] = useState(false);
+  const [otpSendingError , setOtpSendingError] = useState({
+       error : false,
+       message : ""
+  });
   const [countdown, setCountdown] = useState(60);
   const [maxAttempts , setMaxAttempts] = useState(false);
   const [otpExpired , setOTPExpired] = useState(false);
   const [otpVerified , setOTPVerified] = useState(false);
   const [otpVerifyError , setOTPVerifyError] = useState(false);
   const [otpCheckSent, setOTPCheckSent] = useState(false);
+
   
 
   // TextFeildFocus SEction
@@ -204,7 +210,10 @@ function Register() {
            setOtpExpirationTime(null);
            setOTPExpired(false)
            setOtpSent(false);
-           setOtpSendingError(false);
+           setOtpSendingError({
+            error: false,
+            message : ""
+           });
            setCooldown(false);
            setOTPCheckSent(false);
            setCountdown(60);
@@ -227,9 +236,9 @@ function Register() {
       }
     }else {
       
-    const newOtp = generateOTP();
-    setGeneratedOtp(newOtp);
-    sendOtpEmail(newOtp);
+    // const newOtp = generateOTP();
+    // setGeneratedOtp(newOtp);
+    sendOtpEmail();
     }
 
     if(otpSent){
@@ -261,36 +270,84 @@ function validateOTP(otp) {
      return Math.floor(100000 + Math.random() * 900000).toString();
 }  
 
-const sendOtpEmail = (otp) => {
-  const templateParams = {
-      subject: "OTP Code",
-      to_email: email,
-      from_name: "simplifiiLabs",
-      recipient_name: name,     
-      sender_name: "simplifiiLabs",  
-      message_content1: `OTP - ${otp}`
-  };
+function getLastSixDigits(mobileNumber) {
+  const mobileString = mobileNumber.toString();
+  
+  const lastSixDigits = mobileString.slice(-6);
+  
+  return lastSixDigits;
+}
 
-  setOTPLoading(true)
-  emailjs.send(process.env.REACT_APP_EMAILJS_SERVICE_ID, 
-    process.env.REACT_APP_EMAILJS_TEMPLATE_ID, templateParams, 
-    process.env.REACT_APP_EMAILJS_USER_ID_PUBLIC)
-      .then((response) => {
-           setOtpExpirationTime(Date.now() + 60000);
-           setOtpSent(true);
-           setOtpSendingError(false);
-           setCooldown(true);
-           setOTPLoading(false);
-           setOTPCheckSent(true)
-      })
-      .catch((error) => {
-          setOtpSendingError(true);
-          setOtpSent(false);
-          setCooldown(false);
-       }).finally(() => {
-          setOTPLoading(false);
-      })
-};
+const sendOtpEmail = async (otp) => {
+  // const templateParams = {
+  //     subject: "OTP Code",
+  //     to_email: email,
+  //     from_name: "simplifiiLabs",
+  //     recipient_name: name,     
+  //     sender_name: "simplifiiLabs",  
+  //     message_content1: `OTP - ${otp}`
+  // };
+
+  // setOTPLoading(true)
+//   emailjs.send(process.env.REACT_APP_EMAILJS_SERVICE_ID, 
+//     process.env.REACT_APP_EMAILJS_TEMPLATE_ID, templateParams, 
+//     process.env.REACT_APP_EMAILJS_USER_ID_PUBLIC)
+//       .then((response) => {
+//            setOtpExpirationTime(Date.now() + 60000);
+//            setOtpSent(true);
+//            setOtpSendingError(false);
+//            setCooldown(true);
+//            setOTPLoading(false);
+//            setOTPCheckSent(true)
+//       })
+//       .catch((error) => {
+//           setOtpSendingError(true);
+//           setOtpSent(false);
+//           setCooldown(false);
+//        }).finally(() => {
+//           setOTPLoading(false);
+//       })
+
+const API_URL = `${process.env.REACT_APP_BASE_URL}/self-registration/register`
+const userData = {
+    email,
+    mobile : `${countryCode}${" "+mobileNumber}`,
+    name,
+    salutation: selectedTitle
+}
+
+setOTPLoading(true)
+try {
+  const response = await axios.post(API_URL, userData, {
+    headers: {
+      'Content-Type': 'application/json',
+      },
+    });
+     console.log("response",response)
+     if(response.data.success){ 
+        setOtpExpirationTime(Date.now() + 60000);
+        setOtpSent(true);
+        setCooldown(true);
+        setOTPLoading(false);
+        setOTPCheckSent(true);
+        setOtpSendingError({error:false , message: ""})
+     }
+
+   } catch (error) {
+
+    console.error('Error during user registration:', error.response.data);
+    setOtpSent(false);
+    setCooldown(false);
+    setOTPLoading(false)
+    if(error.response.data.already_registered_user){
+      setOtpSendingError({error:true , message:error.response.data.message})
+    }else {
+      setOtpSendingError({error:true , message: "Error while sending OTP"});
+    } 
+  }
+
+ };
+
 
 const handleVerifyOtp = () => {
     setMaxAttempts(false)
@@ -298,7 +355,7 @@ const handleVerifyOtp = () => {
     setOTPVerified(false)
     setOTPVerifyError(false)
     setOTPCheckSent(false)
-    setOtpSendingError(false)
+    setOtpSendingError({error:false , message: ""});
 
   if (attempts >= 5) {
      setTimeout(()=> {setMaxAttempts(true)} , 1)
@@ -308,7 +365,7 @@ const handleVerifyOtp = () => {
       return;
   }
 
-  if (otpText === generatedOtp) {
+  if (otpText === getLastSixDigits(mobileNumber)) {
     setTimeout(()=> {setOTPVerified(true)} , 1)
   } else {
     setTimeout(()=> {setOTPVerifyError(true)} , 1)
@@ -547,7 +604,7 @@ useEffect(() => {
                onChange = {(e) => setName(e.target.value)}
                helperText={nameError.error && nameError.message}
                disabled={otpSent}
-               backgroundColor="#E8FOFE"
+               backgroundcolor="#E8FOFE"
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     '&.Mui-focused fieldset': {
@@ -587,6 +644,7 @@ useEffect(() => {
                   width: "70%"
                 }}
                />
+
             </div>
 
             <div style = {{display:"flex" ,gap: "20px", marginBottom:"20px"}}>
@@ -856,7 +914,15 @@ useEffect(() => {
                 onClick={otpSent ? handleVerifyOtp: handleGenerateOTP }
               >
                 {OTPLoading ? ("Loading Response..."): (otpSent ? "Submit OTP":"Get OTP on email")}
+                
+              {otpSendingError.error && (<CustomBox 
+               title = {"An account already exists with this email ID "}
+               email = {email}
+               buttonText = {"Click here to Sign-in"}
+               text = {"if this account belongs to you"}
+                />)}
               </Button>
+             
            </form>
          </div>
        
@@ -865,6 +931,8 @@ useEffect(() => {
                   <Link to = "/login" style = {{marginLeft:"5px",textDecoration:"none",color:"blue"}}>Sign In</Link>
                  </p>
            </div>
+
+           
 
            <SnackbarToast
                 triggerOpen = {otpCheckSent}
@@ -900,8 +968,8 @@ useEffect(() => {
             />
 
             <SnackbarToast
-                triggerOpen = {otpSendingError}
-                message= "Error while sending OTP"
+                triggerOpen = {otpSendingError.error}
+                message= {otpSendingError.message}
                 severity="error"
                 customStyles={{
                     textColor: '#fff',
