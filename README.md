@@ -1,4 +1,4 @@
-### Steps to run the projec t---
+### Steps to run the project ---
 
 1. npm install
 
@@ -12,7 +12,17 @@
 
 3. email JS (for sending OTP from frontend)
 
-### ScreenShots attatched below related projects
+### API Integration ---
+
+setup Environment Variable -> REACT_APP_BASE_URL = ttps://colo-dev.infollion.com/api/v1
+
+1. api for generate api endpoint (/self-registration/register)
+
+2. api for otp verification endpoint(/self-registration/verify-otp)
+
+3. Static OTP till Now (LastSix Digit Given Mobile number)
+
+### ScreenShots attatched below related projects ---
 
 1. Empty input feild validations
 
