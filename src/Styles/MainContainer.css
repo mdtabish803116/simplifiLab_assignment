@@ -16,10 +16,37 @@
    object-fit: cover;
 }
 
+.customBoxContainer{
+    position: absolute;
+    text-align: center;
+    color: black;
+    top: 70px;
+    width: 30vw;
+    border: 1px solid rgb(236, 147, 36);
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 4px 8px;
+    border-radius:12px;
+    font-size:0.9rem;
+    padding:10px;
+    background: white;
+}
 
 @media (max-width: 900px) {
     .imageContainer {
       display:none;
+    }
+
+    .customBoxContainer{
+      width: 50vw
+    }
+  }
+
+  @media (max-width: 500px) {
+    .imageContainer {
+      display:none;
+    }
+
+    .customBoxContainer{
+      width: 90vw
     }
   }
 
