@@ -293,7 +293,7 @@ const sendOtpEmail = async (otp) => {
 //     process.env.REACT_APP_EMAILJS_TEMPLATE_ID, templateParams, 
 //     process.env.REACT_APP_EMAILJS_USER_ID_PUBLIC)
 //       .then((response) => {
-//            setOtpExpirationTime(Date.now() + 60000);
+//            setOtpExpirationTime(Date.now() + 300000);
 //            setOtpSent(true);
 //            setOtpSendingError(false);
 //            setCooldown(true);
@@ -325,7 +325,7 @@ try {
     });
      console.log("response",response)
      if(response.data.success){ 
-        setOtpExpirationTime(Date.now() + 60000);
+        setOtpExpirationTime(Date.now() + 300000);
         setOtpSent(true);
         setCooldown(true);
         setOTPLoading(false);
@@ -335,7 +335,6 @@ try {
 
    } catch (error) {
 
-    console.error('Error during user registration:', error.response.data);
     setOtpSent(false);
     setCooldown(false);
     setOTPLoading(false)
@@ -344,12 +343,14 @@ try {
     }else {
       setOtpSendingError({error:true , message: "Error while sending OTP"});
     } 
+  }finally{
+    setOTPLoading(false)
   }
 
  };
 
 
-const handleVerifyOtp = () => {
+const handleVerifyOtp = async() => {
     setMaxAttempts(false)
     setOTPExpired(false)
     setOTPVerified(false)
@@ -357,23 +358,64 @@ const handleVerifyOtp = () => {
     setOTPCheckSent(false)
     setOtpSendingError({error:false , message: ""});
 
-  if (attempts >= 5) {
-     setTimeout(()=> {setMaxAttempts(true)} , 1)
-  }else {
-    if (Date.now() > otpExpirationTime) 
-      {setTimeout(()=> {setOTPExpired(true)} , 1)
-      return;
+
+    const API_URL = `${process.env.REACT_APP_BASE_URL}/self-registration/verify-otp`
+    const userData = {
+        action: "SelfRegister",
+        email,
+        otp : getLastSixDigits(mobileNumber)
+    }
+
+    if (attempts >= 5) {
+         setTimeout(()=> {setMaxAttempts(true)} , 1)
+     }else if (Date.now() > otpExpirationTime) 
+         {setTimeout(()=> {setOTPExpired(true)} , 1)
+         return
+    }
+ setOTPLoading(true)
+   try {
+     const response = await axios.post(API_URL, userData, {
+    headers: {
+      'Content-Type': 'application/json',
+      },
+    });
+     console.log("responseOTP",response)
+     setOTPLoading(false)
+     if(response.status === 200 && otpText === getLastSixDigits(mobileNumber)){
+       setOTPVerified(true)
+     }else {
+      setOTPVerifyError(true)
+     }
+    
+   } catch (error) {
+    setOTPLoading(false)
+    setOTPVerifyError(true)
+
+  }finally{
+    setAttempts(attempts + 1);
+    setOTPLoading(false)
   }
 
-  if (otpText === getLastSixDigits(mobileNumber)) {
-    setTimeout(()=> {setOTPVerified(true)} , 1)
-  } else {
-    setTimeout(()=> {setOTPVerifyError(true)} , 1)
-  }
-  }
+ };
+    
 
-  setAttempts(attempts + 1);
-};
+//   if (attempts >= 5) {
+//      setTimeout(()=> {setMaxAttempts(true)} , 1)
+//   }else {
+//     if (Date.now() > otpExpirationTime) 
+//       {setTimeout(()=> {setOTPExpired(true)} , 1)
+//       return;
+//   }
+
+//   if (otpText === getLastSixDigits(mobileNumber)) {
+//     setTimeout(()=> {setOTPVerified(true)} , 1)
+//   } else {
+//     setTimeout(()=> {setOTPVerifyError(true)} , 1)
+//   }
+//   }
+
+ 
+// };
 
 useEffect(() => {
 
@@ -725,7 +767,7 @@ useEffect(() => {
                          
                         },
                        '&::-webkit-scrollbar-thumb': {
-                          backgroundColor: "rgb(236, 147, 36)", 
+                          backgroundcolor: "rgb(236, 147, 36)", 
                           borderRadius: '10px', 
                           height: "4px",  
                         },
@@ -802,7 +844,7 @@ useEffect(() => {
                 onChange = {(e) => setEmail(e.target.value)}
                 helperText={emailError.error && emailError.message}
                 disabled={otpSent}
-                backgroundColor="#E8FOFE"
+                backgroundcolor="#E8FOFE"
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     '&.Mui-focused fieldset': {
